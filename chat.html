@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CHAT APP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div id="messages"></div>
+    <div>
+      <input type="text" id="Vaba" />
+      <button type="button" id="Baba">send message</button>
+    </div>
+
+    <script>
+      var messages = document.getElementById("messages");
+      function abcd() {
+        fetch("/chat_app/get_messages").then(async (data) => {
+          const a = await data.json();
+          var b = "";
+          for (const c of a) {
+            b += c.text + "<br />";
+          }
+          messages.innerHTML = b;
+        });
+      }
+      setInterval(abcd, 1000);
+      var Baba = document.getElementById("Baba");
+      Baba.addEventListener("click", function () {
+        const d = document.getElementById("Vaba");
+        fetch("/chat_app/send_new_message", {
+          method: "POST",
+          body: JSON.stringify({
+            text: d.value,
+            time: Date.now()
+          }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        d.value = "";
+      });
+    </script>
+  </body>
+</html>
